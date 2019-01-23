@@ -15,6 +15,10 @@ iptables  -A OUTPUT -d `ip -o addr show dev eth0 | awk '$3 == "inet" {print $4}'
 ip6tables -A OUTPUT -d `ip -o addr show dev eth0 | awk '$3 == "inet6" {print $4; exit}'` -j ACCEPT 2> /dev/null
 iptables  -A OUTPUT -p udp --dport 53 -j ACCEPT
 ip6tables -A OUTPUT -p udp --dport 53 -j ACCEPT 2> /dev/null
+iptables  -A OUTPUT -o eth0 -p udp --dport 443 -j ACCEPT    
+ip6tables -A OUTPUT -o eth0 -p udp --dport 443 -j ACCEPT 2> /dev/null 
+iptables  -A OUTPUT -o eth0 -p tcp --dport 443 -j ACCEPT              
+ip6tables -A OUTPUT -o eth0 -p tcp --dport 443 -j ACCEPT 2> /dev/null 
 iptables  -A OUTPUT -o eth0 -p udp --dport 1194 -j ACCEPT 
 ip6tables -A OUTPUT -o eth0 -p udp --dport 1194 -j ACCEPT 2> /dev/null
 iptables  -A OUTPUT -o eth0 -p tcp --dport 1194 -j ACCEPT 
