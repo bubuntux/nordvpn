@@ -71,7 +71,7 @@ services:
       - PROTOCOL=UDP
       - CATEGORY=P2P
       - NETWORK=192.168.1.0/24
-      - OPENVPN_OPTS=--pull-filter ignore "ping-restart" --ping-exit 180
+      - OPENVPN_OPTS=--ping-restart 180
       - TZ=America/Denver
     ports:
       - 8080:80
@@ -84,7 +84,7 @@ services:
 
 ## Reconnect
 The container is as simple as it can be, in order to reconnect automatically when connection is lost add:
- - Env variable: OPENVPN_OPTS='--pull-filter ignore "ping-restart" --ping-exit 180'
+ - Env variable: OPENVPN_OPTS='--ping-restart 180'
  - Restart policy: unless-stopped or always 
 
 # ENVIRONMENT VARIABLES
