@@ -67,7 +67,7 @@ services:
       - /dev/net/tun
     environment:
       - USER=user@email.com
-      - PASS='pas$word'
+      - PASS=pas$$word # You must substitute $$ for a literal dollar sign
       - COUNTRY=United_States
       - PROTOCOL=UDP
       - CATEGORY=P2P
