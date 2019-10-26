@@ -125,19 +125,26 @@ select_hostname() {
           filters hostname
 
     white_list ${nordvpn_api}
-    echo "Selecting the best server..." > /dev/stderr
-    filters+="$(country_filter ${nordvpn_api})"
-    filters+="$(group_filter ${nordvpn_api})"
-    filters+="$(technology_filter )"
 
-    hostname=`curl -s "${nordvpn_api}/v1/servers/recommendations?${filters}limit=1" | jq -r ".[].hostname"`
-    if [[ -z ${hostname} ]]; then
-        echo "Unable to find a server with the specified parameters, using any recommended server" > /dev/stderr
-        hostname=`curl -s "${nordvpn_api}/v1/servers/recommendations?limit=1" | jq -r ".[].hostname"`
+    if [[ -z $HOSTNAME ]]; then
+        echo "Selecting the best server..." > /dev/stderr
+        filters+="$(country_filter ${nordvpn_api})"
+        filters+="$(group_filter ${nordvpn_api})"
+        filters+="$(technology_filter )"
+
+        hostname=`curl -s "${nordvpn_api}/v1/servers/recommendations?${filters}limit=1" | jq -r ".[].hostname"`
+        if [[ -z ${hostname} ]]; then
+            echo "Unable to find a server with the specified parameters, using any recommended server" > /dev/stderr
+            hostname=`curl -s "${nordvpn_api}/v1/servers/recommendations?limit=1" | jq -r ".[].hostname"`
+        fi
+
+        echo "Best server : ${hostname}" > /dev/stderr
+        echo ${hostname}
+    else
+        echo "Using supplied hostname '$HOSTNAME'..." > /dev/stderr
+        echo ${HOSTNAME}
     fi
 
-    echo "Best server : ${hostname}" > /dev/stderr
-    echo ${hostname}
 }
 
 select_config_file() {

@@ -36,6 +36,13 @@ This container was designed to be started first to provide a connection to other
                 -e COUNTRY=country -e CATEGORY=category \
                 -e PROTOCOL=protocol -d bubuntux/nordvpn
 
+Connecting to a specific host
+
+    docker run -ti --cap-add=NET_ADMIN --device /dev/net/tun --name vpn \
+                -e USER=user@email.com -e PASS='pas$word' \
+                -e HOSTNAME=au416.nordvpn.com \
+                -d bubuntux/nordvpn
+
 Once it's up other containers can be started using it's network connection:
 
     docker run -it --net=container:vpn -d some/docker-container
@@ -92,6 +99,7 @@ By the fault the container will try to reconnect to the same server when disconn
  * `USER`     - User for NordVPN account.
  * `PASS`     - Password for NordVPN account, surrounding the password in single quotes will prevent issues with special characters such as `$`.
  * `COUNTRY`  - Use servers from an specific country (IE United_States, Australia, NZ, Hong Kong, MX, [full list](https://nordvpn.com/servers/)).  
+ * `HOSTNAME` - Use a specific NordVPN host. Providing this will ignore `COUNTRY`, `CATEGORY` and `PROTOCOL` settings
  * `CATEGORY` - Use servers from an specific category (IE Double_VPN, Standard VPN servers). Allowed categories are:
    * `Standard VPN servers` Get connected to ultra-fast VPN servers anywhere around the globe to change your IP address and protect your browsing activities.
    * `P2P` Choose from hundreds of servers optimized for P2P sharing. NordVPN has no bandwidth limits and doesn’t log any of your activity.

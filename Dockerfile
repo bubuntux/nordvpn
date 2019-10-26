@@ -13,5 +13,5 @@ RUN apk --no-cache --no-progress upgrade && \
 ENV NET_IFACE=eth0
 
 VOLUME ["/vpn"]
-ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/nordVpn.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/nordVpn.sh", ">", "lib"]
 COPY nordVpn.sh /usr/bin
