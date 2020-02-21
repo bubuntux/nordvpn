@@ -32,6 +32,8 @@ kill_switch() {
 		ip6tables -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT 2>/dev/null
 		ip6tables -A OUTPUT -o ${NET_IFACE} -d api.nordvpn.com -j ACCEPT 2>/dev/null
 	}
+	
+	iptables -t nat -A POSTROUTING -o tun+ -j MASQUERADE
 
 	[[ -n ${NETWORK} ]]  && for net in ${NETWORK//[;,]/ };  do return_route ${net};  done
 	[[ -n ${NETWORK6} ]] && for net in ${NETWORK6//[;,]/ }; do return_route6 ${net}; done
