@@ -67,6 +67,11 @@ setup_nordvpn() {
 	[[ -n ${DEBUG} ]] && nordvpn settings
 }
 
+create_tun_device() {
+	mkdir -p /dev/net
+	[[ -c /dev/net/tun ]] || mknod -m 0666 /dev/net/tun c 10 200
+}
+
 kill_switch
 
 pkill nordvpnd 
@@ -76,6 +81,7 @@ sleep 0.5
 
 nordvpn login -u ${USER} -p ${PASS}
 setup_nordvpn
+create_tun_device
 
 nordvpn connect ${CONNECT} || exit 1
 
