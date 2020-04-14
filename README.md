@@ -29,9 +29,11 @@ This container was designed to be started first to provide a connection to other
 
 ## Starting an NordVPN instance
 
-    docker run -ti --cap-add=NET_ADMIN --device /dev/net/tun --name vpn \
+    docker run -ti --cap-add=NET_ADMIN --cap-add=SYS_MODULE --device /dev/net/tun --name vpn \
                 -e USER=user@email.com -e PASS='pas$word' \
                 -e CONNECT=country -e TECHNOLOGY=NordLynx -d bubuntux/nordvpn
+
+**NOTE**: `--cap-add=SYS_MODULE` is only required when selecting `TECHNOLOGY=NordLynx`. `TECHNOLOGY=OpenVPN` only requires `--cap-add=NET_ADMIN`.
 
 Once it's up other containers can be started using it's network connection:
 
@@ -61,7 +63,8 @@ services:
     image: bubuntux/nordvpn
     network_mode: bridge
     cap_add:
-      - net_admin
+      - NET_ADMIN
+      - SYS_MODULE # Required for TECHNOLOGY=NordLynx
     devices:
       - /dev/net/tun
     environment:
@@ -97,7 +100,7 @@ All traffic going through the container is router to the vpn (unless whitelisted
    - --group value, -g value  Specify a server group to connect to. For example: 'us -g p2p'
  * `TECHNOLOGY` - Specify Technology to use: 
    * OpenVPN    - Traditional connection.
-   * NordLynx   - NordVpn wireguard implementation (3x-5x times faster).
+   * NordLynx   - NordVpn wireguard implementation (3x-5x times faster). NOTE: Requires `--cap-add=SYS_MODULE`
  * `PROTOCOL`   - TCP or UDP (only valid when using OpenVPN).
  * `OBFUSCATE`  - Enable or Disable. When enabled, this feature allows to bypass network traffic sensors which aim to detect usage of the protocol and log, throttle or block it (only valid when using OpenVpn). 
  * `CYBER_SEC`  - Enable or Disable. When enabled, the CyberSec feature will automatically block suspicious websites so that no malware or other cyber threats can infect your device. Additionally, no flashy ads will come into your sight. More information on how it works: https://nordvpn.com/features/cybersec/.
