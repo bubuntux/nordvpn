@@ -1,0 +1,45 @@
+#!/bin/sh
+
+#Date function
+add_date() {
+    echo "$(date +"%Y-%m-%d %T.%3N")"
+}
+
+disable_privoxy() {
+  echo "$(add_date) Disabling Privoxy"
+
+  sv down $(pwd)
+}
+
+write_config() {
+  cat > config <<EOF
+confdir /app/privoxy
+
+listen-address  0.0.0.0:${HTTP_PROXY_PORT:-8118}
+
+debug   1    # Show each GET/POST/CONNECT request
+debug   4096 # Startup banner and warnings
+EOF
+}
+
+# If no port is defined, do not enable Privoxy
+if [ "${HTTP_PROXY_PORT}" = "" ]; then
+  disable_privoxy
+  exit 1
+fi
+
+# Wait until NordVPN is connected
+while ! (nordvpn status | grep -qi 'status: connected') ; do
+	sleep 0.5
+done
+
+# Return traffic that went through OpenVPN works.
+gw=$(ip route | awk '/default/ {print $3}')
+ip route add to ${NETWORK} via $gw dev eth0
+
+# Write privoxy config file
+write_config
+
+# Start privoxy
+echo "$(add_date) INFO: Privoxy will be started"
+privoxy --no-daemon
