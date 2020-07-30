@@ -153,6 +153,11 @@ services:
 
 All traffic going through the container is router to the vpn (unless whitelisted), If connection to the vpn drops your connection to the internet stays blocked until the VPN tunnel is restored. THIS IS THE DEFAULT BEHAVIOUR AND CAN NOT BE DISABLE.
 
+## Privoxy support
+
+By defining the `HTTP_PROXY_PORT` ENV variable, [Privoxy](https://www.privoxy.org/) is enabled, to allow using the VPN from the browser.
+Thanks to [Joentje](https://github.com/Joentje/nordvpn-proxy) for both Privoxy and runit example, in which this was based.
+
 # ENVIRONMENT VARIABLES
 
 - `USER` - User for NordVPN account.
@@ -178,7 +183,7 @@ All traffic going through the container is router to the vpn (unless whitelisted
 - `GROUPID` - Set the GID for the vpn.
 - `DEBUG` - Set to 'on' for troubleshooting (User and Pass would be log).
 - `PORTS` - Semicolon delimited list of ports to whitelist for both UDP and TCP. For example `- PORTS=9091;9095`
-- `HTTP_PROXY_PORT` - Set a port to enable [Privoxy](https://www.privoxy.org/) on, to allow using the VPN from the browser. Disabled by default
+- `HTTP_PROXY_PORT` - Set a port to enable Privoxy on. Disabled by default
 
 # Supported Architectures
 
