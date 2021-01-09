@@ -20,8 +20,8 @@ kill_switch() {
 	iptables -A OUTPUT -o tap+ -j ACCEPT
 	iptables -A OUTPUT -o tun+ -j ACCEPT
 	iptables -A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
+	iptables -A OUTPUT -p udp -m udp --dport 51820 -j ACCEPT
 	iptables -A OUTPUT -m owner --gid-owner vpn -j ACCEPT || {
-		iptables  -A OUTPUT -p udp -m udp --dport 51820 -j ACCEPT
 		iptables  -A OUTPUT -p tcp -m tcp --dport 1194  -j ACCEPT
 		iptables  -A OUTPUT -p udp -m udp --dport 1194  -j ACCEPT
 		iptables  -A OUTPUT -p tcp -m tcp --dport 443   -j ACCEPT
