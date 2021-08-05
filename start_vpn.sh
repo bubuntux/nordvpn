@@ -147,11 +147,9 @@ restart_daemon() {
 }
 restart_daemon
 
-[[ -f "${PASSFILE}" ]] && PASS="$(head -n 1 "${PASSFILE}")"
-
 echo "[$(date -Iseconds)] Logging in"
 nordvpn logout > /dev/null
-nordvpn login --username "${USER}" --password "${PASS}" || {
+nordvpn login --username "${USER}" --password "$(set +x; [[ -f "${PASSFILE}" ]] && head -n 1 "${PASSFILE}" || echo "${PASS}")" || {
   echo "[$(date -Iseconds)] Invalid Username or password."
   exit 1
 }
