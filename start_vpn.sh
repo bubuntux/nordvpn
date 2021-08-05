@@ -147,7 +147,7 @@ restart_daemon() {
 }
 restart_daemon
 
-[[ -z "${PASS}" ]] && [[ -f "${PASSFILE}" ]] && PASS="$(head -n 1 "${PASSFILE}")"
+[[ -f "${PASSFILE}" ]] && PASS="$(head -n 1 "${PASSFILE}")"
 
 echo "[$(date -Iseconds)] Logging in"
 nordvpn logout > /dev/null
