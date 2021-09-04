@@ -31,6 +31,6 @@ while [ $counter -le $CHECK_CONNECTION_ATTEMPTS ]; do
 done
 
 echo "Connection via VPN is down, recreate VPN"
-/app/reconnect.sh
+reconnect.sh
 
 exit 1

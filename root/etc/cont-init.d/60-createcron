@@ -8,12 +8,12 @@ touch "$cron_file"
 
 if [[ "${RECREATE_VPN_CRON}" ]]; then
     echo "Create reconnection cron"
-    echo "$RECREATE_VPN_CRON /app/reconnect.sh" >> "$cron_file"
+    echo "$RECREATE_VPN_CRON reconnect.sh" >> "$cron_file"
 fi
 
 if [[ "${CHECK_CONNECTION_CRON}" ]]; then
     echo "Create connectivity check cron"
-    echo "$CHECK_CONNECTION_CRON /app/checkconnection.sh" >> "$cron_file"
+    echo "$CHECK_CONNECTION_CRON checkconnection.sh" >> "$cron_file"
 fi
 
 exit 0

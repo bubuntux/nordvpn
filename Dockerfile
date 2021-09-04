@@ -5,10 +5,11 @@ ENV PACKAGE="just-containers/s6-overlay"
 ARG TARGETPLATFORM
 COPY /github_packages.json /tmp/github_packages.json
 
-RUN echo "**** upgrade packages ****" && \
-    apk --no-cache --no-progress upgrade && \
-    echo "**** install packages ****" && \
-    apk --no-cache --no-progress add tar jq && \
+RUN echo "**** install mandatory packages ****" && \
+    apk --no-cache --no-progress add tar=1.34-r0 \
+        jq=1.6-r1 && \
+    echo "**** upgrade packages ****" && \
+    apk --no-cache --no-progress add openssl=1.1.1l-r0 && \
     echo "**** create folders ****" && \
     mkdir -p /s6 && \
     echo "**** download ${PACKAGE} ****" && \
@@ -22,9 +23,20 @@ RUN echo "**** upgrade packages ****" && \
         *)                echo ""         ;; esac) && \
     VERSION=$(jq -r '.[] | select(.name == "'${PACKAGE}'").version' /tmp/github_packages.json) && \
     echo "Package ${PACKAGE} platform ${PACKAGEPLATFORM} version ${VERSION}" && \
-    wget -q https://github.com/${PACKAGE}/releases/download/v${VERSION}/s6-overlay-${PACKAGEPLATFORM}.tar.gz -qO /tmp/s6-overlay.tar.gz && \
+    wget -q "https://github.com/${PACKAGE}/releases/download/v${VERSION}/s6-overlay-${PACKAGEPLATFORM}.tar.gz" -qO /tmp/s6-overlay.tar.gz && \
     tar xfz /tmp/s6-overlay.tar.gz -C /s6/
 
+# rootfs builder
+FROM alpine:3.14 AS rootfs-builder
+
+RUN echo "**** upgrade packages ****" && \
+    apk --no-cache --no-progress add openssl=1.1.1l-r0
+
+COPY root/ /rootfs/
+RUN chmod +x /rootfs/usr/bin/*
+COPY --from=s6-builder /s6/ /rootfs/
+
+# Main image
 FROM alpine:3.14
 
 LABEL maintainer="Alexander Zinchenko <alexander@zinchenko.com>"
@@ -38,10 +50,16 @@ ENV URL_NORDVPN_API="https://api.nordvpn.com/server" \
     CHECK_CONNECTION_ATTEMPTS=5 \
     CHECK_CONNECTION_ATTEMPT_INTERVAL=10
 
-RUN echo "**** upgrade packages ****" && \
-    apk --no-cache --no-progress upgrade && \
-    echo "**** install packages ****" && \
-    apk --no-cache --no-progress add bash curl unzip iptables ip6tables jq openvpn && \
+RUN echo "**** install mandatory packages ****" && \
+    apk --no-cache --no-progress add bash=5.1.4-r0 \
+        curl=7.78.0-r0 \
+        unzip=6.0-r9 \
+        iptables=1.8.7-r1 \
+        ip6tables=1.8.7-r1 \
+        jq=1.6-r1 \
+        openvpn=2.5.2-r0 && \
+    echo "**** upgrade packages ****" && \
+    apk --no-cache --no-progress add openssl=1.1.1l-r0 && \
     echo "**** create folders ****" && \
     mkdir -p /vpn && \
     mkdir -p /ovpn && \
@@ -49,10 +67,7 @@ RUN echo "**** upgrade packages ****" && \
     rm -rf /tmp/* && \
     rm -rf /var/cache/apk/*
 
-COPY --from=s6-builder /s6/ /
-COPY root/ /
-
-RUN chmod +x /app/*
+COPY --from=rootfs-builder /rootfs/ /
 
 VOLUME ["/config"]
 VOLUME ["/data"]

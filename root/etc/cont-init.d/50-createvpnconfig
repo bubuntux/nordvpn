@@ -1,5 +1,5 @@
 #!/usr/bin/with-contenv bash
 
-/app/createvpnconfig.sh
+createvpnconfig.sh
 
 exit 0
