@@ -57,10 +57,7 @@ FROM alpine:3.14
 
 LABEL maintainer="Alexander Zinchenko <alexander@zinchenko.com>"
 
-ENV URL_NORDVPN_API="https://api.nordvpn.com/server" \
-    URL_RECOMMENDED_SERVERS="https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_recommendations" \
-    PROTOCOL=openvpn_udp \
-    MAX_LOAD=70 \
+ENV TECHNOLOGY=openvpn_udp \
     RANDOM_TOP=0 \
     CHECK_CONNECTION_ATTEMPTS=5 \
     CHECK_CONNECTION_ATTEMPT_INTERVAL=10

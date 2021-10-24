@@ -13,16 +13,13 @@ iptables  -A OUTPUT -o tap0 -j ACCEPT
 ip6tables -A OUTPUT -o tap0 -j ACCEPT 2>/dev/null
 iptables  -A OUTPUT -o tun0 -j ACCEPT
 ip6tables -A OUTPUT -o tun0 -j ACCEPT 2> /dev/null
-iptables  -A OUTPUT -d `ip -o addr show dev eth0 | awk '$3 == "inet" {print $4}'` -j ACCEPT
-ip6tables -A OUTPUT -d `ip -o addr show dev eth0 | awk '$3 == "inet6" {print $4}'` -j ACCEPT 2> /dev/null
+iptables  -A OUTPUT -d $(ip -o addr show dev eth0 | awk '$3 == "inet" {print $4}') -j ACCEPT
+ip6tables -A OUTPUT -d $(ip -o addr show dev eth0 | awk '$3 == "inet6" {print $4}') -j ACCEPT 2> /dev/null
 iptables  -A OUTPUT -p udp --dport 53 -j ACCEPT
 ip6tables -A OUTPUT -p udp --dport 53 -j ACCEPT 2> /dev/null
 
 echo "Bypass requests to NordVPN thru regular connection"
-iptables  -A OUTPUT -o eth0 -d `echo $URL_NORDVPN_API | awk -F/ '{print $3}'` -j ACCEPT
-ip6tables -A OUTPUT -o eth0 -d `echo $URL_NORDVPN_API | awk -F/ '{print $3}'` -j ACCEPT 2> /dev/null
-
-iptables  -A OUTPUT -o eth0 -d `echo $URL_RECOMMENDED_SERVERS | awk -F/ '{print $3}'` -j ACCEPT
-ip6tables -A OUTPUT -o eth0 -d `echo $URL_RECOMMENDED_SERVERS | awk -F/ '{print $3}'` -j ACCEPT 2> /dev/null
+iptables  -A OUTPUT -o eth0 -d "api.nordvpn.com" -j ACCEPT
+ip6tables -A OUTPUT -o eth0 -d "api.nordvpn.com" -j ACCEPT 2> /dev/null
 
 exit 0
