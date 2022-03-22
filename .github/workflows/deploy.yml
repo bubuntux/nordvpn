@@ -57,7 +57,7 @@ jobs:
             ghcr.io/${{ github.repository }}:latest
 
       - name: Update repo description
-        uses: peter-evans/dockerhub-description@v2
+        uses: peter-evans/dockerhub-description@v3
         if: steps.git.outputs.name == 'master'
         with:
           username: ${{ github.repository_owner }}
