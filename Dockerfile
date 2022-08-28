@@ -5,9 +5,15 @@ ENV PACKAGE="just-containers/s6-overlay"
 ENV PACKAGEVERSION="3.1.2.0"
 ARG TARGETPLATFORM
 
-RUN echo "**** install mandatory packages ****" && \
-    apk --no-cache --no-progress add tar=1.34-r0 \
-        xz=5.2.5-r1 && \
+RUN echo "**** install security fix packages ****" && \
+    apk --no-cache --no-progress add \
+        zlib=1.2.12-r3 \
+        && \
+    echo "**** install mandatory packages ****" && \
+    apk --no-cache --no-progress add \
+        tar=1.34-r0 \
+        xz=5.2.5-r1 \
+        && \
     echo "**** create folders ****" && \
     mkdir -p /s6 && \
     echo "**** download ${PACKAGE} ****" && \
@@ -27,6 +33,10 @@ RUN echo "**** install mandatory packages ****" && \
 # rootfs builder
 FROM alpine:3.16.2 AS rootfs-builder
 
+RUN echo "**** install security fix packages ****" && \
+    apk --no-cache --no-progress add \
+        zlib=1.2.12-r3
+
 COPY root/ /rootfs/
 RUN chmod +x /rootfs/usr/bin/*
 RUN chmod +x /rootfs/etc/nordvpn/init/*
@@ -43,15 +53,21 @@ ENV TECHNOLOGY=openvpn_udp \
     CHECK_CONNECTION_ATTEMPT_INTERVAL=10 \
     S6_CMD_WAIT_FOR_SERVICES_MAXTIME=120000
 
-RUN echo "**** install mandatory packages ****" && \
-    apk --no-cache --no-progress add bash=5.1.16-r2 \
+RUN echo "**** install security fix packages ****" && \
+    apk --no-cache --no-progress add \
+        zlib=1.2.12-r3 \
+        && \
+    echo "**** install mandatory packages ****" && \
+    apk --no-cache --no-progress add \
+        bash=5.1.16-r2 \
         curl=7.83.1-r2 \
         iptables=1.8.8-r1 \
         ip6tables=1.8.8-r1 \
         jq=1.6-r1 \
         shadow=4.10-r3 \
         shadow-login=4.10-r3 \
-        openvpn=2.5.6-r1 && \
+        openvpn=2.5.6-r1 \
+        && \
     echo "**** create process user ****" && \
     addgroup --system --gid 912 nordvpn && \
     adduser --system --uid 912 --disabled-password --no-create-home --ingroup nordvpn nordvpn && \
