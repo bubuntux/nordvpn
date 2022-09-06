@@ -68,7 +68,7 @@ RUN echo "**** install security fix packages ****" && \
     echo "**** install mandatory packages ****" && \
     apk --no-cache --no-progress add \
         bash=5.1.16-r2 \
-        curl=7.83.1-r2 \
+        curl=7.83.1-r3 \
         iptables=1.8.8-r1 \
         ip6tables=1.8.8-r1 \
         jq=1.6-r1 \
