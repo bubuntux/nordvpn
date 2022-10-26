@@ -1,7 +1,7 @@
 FROM ghcr.io/linuxserver/baseimage-ubuntu:bionic
 LABEL maintainer="Julio Gutierrez julio.guti+nordvpn@pm.me"
 
-ARG NORDVPN_VERSION=3.14.1
+ARG NORDVPN_VERSION=3.15.0
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y && \
