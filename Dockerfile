@@ -1,7 +1,7 @@
-FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
+FROM ghcr.io/linuxserver/baseimage-ubuntu:noble
 LABEL maintainer="Julio Gutierrez julio.guti+nordvpn@pm.me"
 
-ARG NORDVPN_VERSION=3.20.0
+ARG NORDVPN_VERSION=4.0.0
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y && \
@@ -20,5 +20,8 @@ RUN apt-get update -y && \
 		/var/tmp/*
 
 COPY /rootfs /
+RUN chmod +x /etc/cont-init.d/* /etc/services.d/nordvpn/* \
+    /usr/bin/dockerNetworks /usr/bin/dockerNetworks6 /usr/bin/nord_config /usr/bin/nord_connect /usr/bin/nord_login /usr/bin/nord_migrate /usr/bin/nord_watch \
+    /etc/services.d/nordvpn/data/check
 ENV S6_CMD_WAIT_FOR_SERVICES=1
 CMD nord_login && nord_config && nord_connect && nord_migrate && nord_watch

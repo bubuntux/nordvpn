@@ -175,7 +175,7 @@ services:
 # ENVIRONMENT VARIABLES
 
 * `TOKEN`    - Token for NordVPN account, can be generated in the web portal
-* `TOKENFILE` - File from which to get `TOKEN`, if using [docker secrets](https://docs.docker.com/compose/compose-file/compose-file-v3/#secrets) this should be set to `/run/secrets/<secret_name>`. Thi
+* `TOKENFILE` - File from which to get `TOKEN`, if using [docker secrets](https://docs.docker.com/compose/compose-file/compose-file-v3/#secrets) this should be set to `/run/secrets/<secret_name>`. This takes precedence over `TOKEN`.
 * `CONNECT`  -  [country]/[server]/[country_code]/[city]/[group] or [country] [city], if none provide you will connect to  the recommended server.
    - Provide a [country] argument to connect to a specific country. For example: Australia , Use `docker run --rm ghcr.io/bubuntux/nordvpn nordvpn countries` to get the list of countries.
    - Provide a [server] argument to connect to a specific server. For example: jp35 , [Full List](https://nordvpn.com/servers/tools/)
