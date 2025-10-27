@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-ubuntu:noble
+FROM lscr.io/linuxserver/baseimage-ubuntu:noble
 LABEL maintainer="Julio Gutierrez julio.guti+nordvpn@pm.me"
 
 ARG NORDVPN_VERSION=4.1.1
