@@ -1,3 +1,9 @@
+# THIS REPOSITORY IS NOT MAINTAINED
+
+**I recommend switching to use [github.com/qdm12/gluetun](https://github.com/qdm12/gluetun) instead.**
+
+---
+
 <p align="center">
     <a href="https://nordvpn.com/"><img src="https://github.com/bubuntux/nordvpn/raw/master/.img/NordVpn_logo.png"/></a>
     </br>
