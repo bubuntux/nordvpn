@@ -1,4 +1,4 @@
-# ⚠️⚠️⚠️ THIS REPOSITORY IS NOT MAINTAINED ⚠️⚠️⚠️
+# ⚠️ THIS REPOSITORY IS NOT MAINTAINED ⚠️
 
 **I recommend switching to use [github.com/qdm12/gluetun](https://github.com/qdm12/gluetun) instead.**
 
